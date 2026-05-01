@@ -2,19 +2,32 @@ Welcome to your new TanStack Start app!
 
 # Getting Started
 
-To run this application:
+The TanStack Start app now lives in `apps/web`, while Convex stays at the repository root.
+
+To run local development from the repository root:
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
+`pnpm dev` starts both the web app and Convex together.
+
 # Building For Production
 
-To build this application for production:
+To build the workspace from the repository root:
 
 ```bash
 pnpm build
+```
+
+## Deploying
+
+Deploy the web app and Convex separately:
+
+```bash
+pnpm deploy:web
+pnpm deploy:convex
 ```
 
 ## Testing
@@ -33,23 +46,23 @@ This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
 
 If you prefer not to use Tailwind CSS:
 
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/styles.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
+1. Remove the demo pages in `apps/web/src/routes/demo/`
+2. Replace the Tailwind import in `apps/web/src/styles.css` with your own styles
+3. Remove `tailwindcss()` from the plugins array in `apps/web/vite.config.ts`
 4. Uninstall the packages: `pnpm add @tailwindcss/vite tailwindcss --dev`
 
 ## Setting up Convex
 
-- Set the `VITE_CONVEX_URL` and `CONVEX_DEPLOYMENT` environment variables in your `.env.local`. (Or run `pnpm dlx convex init` to set them automatically.)
-- Run `pnpm dlx convex dev` to start the Convex server.
+- Set the `VITE_CONVEX_URL` and `CONVEX_DEPLOYMENT` environment variables in the root `.env.local`. (Or run `pnpm dlx convex init` to set them automatically.)
+- Run `pnpm dev` for the standard combined workflow, or `pnpm convex:dev` if you only want Convex.
 
 ## Routing
 
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
+This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `apps/web/src/routes`.
 
 ### Adding A Route
 
-To add a new route to your application just add a new file in the `./src/routes` directory.
+To add a new route to your application just add a new file in the `apps/web/src/routes` directory.
 
 TanStack will automatically generate the content of the route file for you.
 
@@ -75,7 +88,7 @@ More information on the `Link` component can be found in the [Link documentation
 
 ### Using A Layout
 
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
+In the File Based Routing setup the layout is located in `apps/web/src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
 
 Here is an example layout that includes a header:
 
