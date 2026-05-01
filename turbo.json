@@ -1,0 +1,34 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "envMode": "loose",
+  "globalDependencies": [".env.local", "tsconfig.json", "oxlint.config.mjs", ".oxfmtrc.json"],
+  "noUpdateNotifier": true,
+  "ui": "stream",
+  "tasks": {
+    "//#convex:dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "//#lint:root": {
+      "outputs": []
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "outputs": []
+    },
+    "preview": {
+      "cache": false,
+      "dependsOn": ["build"]
+    },
+    "test": {
+      "outputs": []
+    }
+  }
+}
