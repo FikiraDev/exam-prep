@@ -8,7 +8,8 @@
   "scripts": {
     "build": "vite build",
     "deploy": "pnpm run build && wrangler deploy",
-    "dev": "node ../../scripts/run-with-prefix.mjs [web] vite dev --port 3000",
+    "dev": "portless exam-prep --force vite dev",
+    "dev:app": "vite dev",
     "lint": "oxlint -c ../../oxlint.config.mjs . --deny-warnings",
     "lint:fix": "oxlint -c ../../oxlint.config.mjs . --fix --fix-suggestions",
     "lint:fix:dangerously": "oxlint -c ../../oxlint.config.mjs . --fix --fix-suggestions --fix-dangerously",

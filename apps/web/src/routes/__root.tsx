@@ -54,7 +54,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <ConvexProvider>
           {children}
           <TanStackDevtools config={devtoolsConfig} plugins={devtoolsPlugins} />

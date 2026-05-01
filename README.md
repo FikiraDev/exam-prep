@@ -4,14 +4,26 @@ Welcome to your new TanStack Start app!
 
 The TanStack Start app now lives in `apps/web`, while Convex stays at the repository root.
 
+## Local URLs
+
+Local web development uses `portless` so the app runs at a stable HTTPS hostname instead of a hardcoded localhost port.
+
+- Main local app URL: `https://exam-prep.localhost`
+- Main command: `pnpm dev`
+- Re-running `pnpm dev` automatically replaces an older `exam-prep.localhost` session if one is still registered.
+- The repo pins `portless@0.12.0`, so `pnpm dev` and `pnpm exec portless ...` always use the repo version even if you also have `portless` installed globally.
+
 To run local development from the repository root:
 
 ```bash
 pnpm install
+pnpm exec portless trust
 pnpm dev
 ```
 
 `pnpm dev` starts both the web app and Convex together.
+
+If you only want to run the Vite app directly without portless, use `pnpm --filter web run dev:app`.
 
 # Building For Production
 
@@ -55,6 +67,23 @@ If you prefer not to use Tailwind CSS:
 
 - Set the `VITE_CONVEX_URL` and `CONVEX_DEPLOYMENT` environment variables in the root `.env.local`. (Or run `pnpm dlx convex init` to set them automatically.)
 - Run `pnpm dev` for the standard combined workflow, or `pnpm convex:dev` if you only want Convex.
+- Keep `VITE_CONVEX_URL` pointed at the Convex deployment URL. `portless` only fronts the web dev server and does not replace Convex's own URL.
+
+## Portless
+
+`portless` handles the web server only. Turbo still starts Convex from the repo root through the existing `//#convex:dev` task.
+
+- Use `pnpm exec portless list` to inspect active routes.
+- Use `pnpm exec portless hosts sync` if Safari fails to resolve `.localhost`.
+- Use `pnpm exec portless clean` to reset local certificates, routes, and hosts entries.
+- Use `PORTLESS=0 pnpm dev` to bypass portless and fall back to the direct app process.
+
+### Future Auth Work
+
+- Register `https://exam-prep.localhost` as an allowed origin or callback URL in auth providers.
+- Do not assume `localhost:3000` once auth is added.
+- If you later proxy one portless app to another through Vite, set `changeOrigin: true` in the Vite proxy config.
+- If a provider does not support wildcard local callback URLs, prefer the main checkout instead of a git worktree when testing auth locally.
 
 ## Routing
 

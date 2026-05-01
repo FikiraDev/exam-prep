@@ -23,6 +23,9 @@ importers:
       oxlint-tsgolint:
         specifier: ^0.22.1
         version: 0.22.1
+      portless:
+        specifier: 0.12.0
+        version: 0.12.0
       turbo:
         specifier: ^2.5.6
         version: 2.9.7
@@ -2583,6 +2586,12 @@ packages:
 
   pkg-types@2.3.1:
     resolution: {integrity: sha512-y+ichcgc2LrADuhLNAx8DFjVfgz91pRxfZdI3UDhxHvcVEZsenLO+7XaU5vOp0u/7V/wZ+plyuQxtrDlZJ+yeg==}
+
+  portless@0.12.0:
+    resolution: {integrity: sha512-zE8EYJ5xIEtKEBu1wnD+FavOE90/GNxRixF4Mu2hxMvDuVx1ftUbA6VbjbxI9sP9LUt0L26l6OiENGo4EFtLfw==}
+    engines: {node: '>=20'}
+    os: [darwin, linux, win32]
+    hasBin: true
 
   postcss-selector-parser@6.0.10:
     resolution: {integrity: sha512-IQ7TZdoaqbT+LCpShg46jnZVlhWD2w6iQYAcYXfHARZ7X1t/UGhhceQDs5X0cGqKvYlHNOuv7Oa1xmb0oQuA3w==}
@@ -5208,6 +5217,8 @@ snapshots:
       confbox: 0.2.4
       exsolve: 1.0.8
       pathe: 2.0.3
+
+  portless@0.12.0: {}
 
   postcss-selector-parser@6.0.10:
     dependencies:

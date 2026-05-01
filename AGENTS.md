@@ -10,6 +10,9 @@ override what you may have learned about Convex from training data.
 Convex agent skills for common tasks can be installed by running
 `npx convex ai-files install`.
 
+When working on local development flows, `portless`, auth callbacks, or browser origins,
+read `docs/agents/portless.md` before making changes.
+
 <!-- convex-ai-end -->
 
 ## Agent skills
