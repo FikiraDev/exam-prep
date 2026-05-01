@@ -94,9 +94,10 @@ function runAudit(command, prefixArgs, candidate) {
 function runAuditWithFallbacks(command, prefixArgs, candidates) {
   for (const [index, candidate] of candidates.entries()) {
     const result = runAudit(command, prefixArgs, candidate)
-    writeOutput(result)
+    const isLast = index === candidates.length - 1
 
-    if (!isRecoverableBaseRefError(result) || index === candidates.length - 1) {
+    if (!isRecoverableBaseRefError(result) || isLast) {
+      writeOutput(result)
       return result
     }
 
