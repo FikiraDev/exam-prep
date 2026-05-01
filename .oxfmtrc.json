@@ -45,7 +45,7 @@
     "sortSideEffects": false
   },
   "sortTailwindcss": {
-    "stylesheet": "./src/styles.css",
+    "stylesheet": "./apps/web/src/styles.css",
     "attributes": ["class", "className", "ngClass", "@apply", "class:list"],
     "functions": ["classnames", "clsx", "cn", "ctl", "cva", "tv", "tw", "twMerge"],
     "preserveDuplicates": false,
@@ -53,7 +53,7 @@
   },
   "ignorePatterns": [
     "convex/_generated/**",
-    "src/routeTree.gen.ts",
+    "apps/web/src/routeTree.gen.ts",
     ".tanstack/**",
     ".wrangler/**",
     ".output/**",

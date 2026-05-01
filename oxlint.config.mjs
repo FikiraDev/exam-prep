@@ -58,7 +58,7 @@ export default defineConfig({
     },
     tailwindcss: {
       attributes: ['class', 'className', 'ngClass', '@apply', 'class:list'],
-      cssConfigPath: join(root, 'src/styles.css'),
+      cssConfigPath: join(root, 'apps/web/src/styles.css'),
       functions: ['classnames', 'clsx', 'cn', 'ctl', 'cva', 'tv', 'tw', 'twMerge'],
     },
   },
@@ -98,7 +98,7 @@ export default defineConfig({
   },
   ignorePatterns: [
     'convex/_generated/**',
-    'src/routeTree.gen.ts',
+    'apps/web/src/routeTree.gen.ts',
     '.tanstack/**',
     '.wrangler/**',
     '.output/**',
