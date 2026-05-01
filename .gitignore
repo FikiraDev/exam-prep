@@ -2,8 +2,22 @@ node_modules
 .DS_Store
 dist
 dist-ssr
-*.local
-.env
+
+# Env / secrets (explicit; avoid *.local — too broad)
+# Use ** patterns so !**/.env.example reliably un-ignores templates (Git negation quirk with .env*)
+**/.env
+**/.env.*
+!**/.env.example
+.dev.vars*
+
+# Logs / diagnostics
+*.log
+pnpm-debug.log*
+
+# Tests / TypeScript cache
+coverage/
+*.tsbuildinfo
+
 .nitro
 .tanstack
 .wrangler
@@ -13,11 +27,17 @@ dist-ssr
 __unconfig*
 todos.json
 
-# vscode
-.vscode
+# VS Code — ignore workspace junk; allow shared configs
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/tasks.json
+!.vscode/launch.json
 
 # Agents
 .agents
 
 .claude
-CLAUDE.md
+
+.fallow/
+.husky/_/
