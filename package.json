@@ -6,11 +6,18 @@
     "#/*": "./src/*"
   },
   "scripts": {
-    "dev": "vite dev --port 3000",
     "build": "vite build",
+    "check": "pnpm run lint && pnpm run format:check",
+    "deploy": "pnpm run build && wrangler deploy",
+    "dev": "vite dev --port 3000",
+    "fix": "pnpm run lint:fix && pnpm run format",
+    "format": "oxfmt .",
+    "format:check": "oxfmt . --check",
+    "lint": "oxlint -c oxlint.config.mjs . --deny-warnings",
+    "lint:fix": "oxlint -c oxlint.config.mjs . --fix --fix-suggestions",
+    "lint:fix:dangerously": "oxlint -c oxlint.config.mjs . --fix --fix-suggestions --fix-dangerously",
     "preview": "vite preview",
-    "test": "vitest run",
-    "deploy": "pnpm run build && wrangler deploy"
+    "test": "vitest run"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.26.0",
@@ -42,7 +49,11 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^6.0.1",
+    "eslint-plugin-tailwindcss": "4.0.0-alpha.2",
     "jsdom": "^28.1.0",
+    "oxfmt": "^0.47.0",
+    "oxlint": "^1.62.0",
+    "oxlint-tsgolint": "^0.22.1",
     "typescript": "^6.0.2",
     "vite": "^8.0.0",
     "vitest": "^4.1.5",

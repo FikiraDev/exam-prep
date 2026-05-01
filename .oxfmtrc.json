@@ -1,0 +1,66 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 100,
+  "endOfLine": "lf",
+  "insertFinalNewline": true,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": false,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "sortPackageJson": {
+    "sortScripts": true
+  },
+  "sortImports": {
+    "customGroups": [
+      {
+        "groupName": "react-libs",
+        "elementNamePattern": ["react", "react-dom", "react-dom/**"]
+      },
+      {
+        "groupName": "tanstack-libs",
+        "elementNamePattern": ["@tanstack/**"]
+      },
+      {
+        "groupName": "convex-libs",
+        "elementNamePattern": ["convex", "convex/**", "@convex-dev/**"]
+      }
+    ],
+    "groups": [
+      "type-import",
+      "react-libs",
+      "tanstack-libs",
+      "convex-libs",
+      ["value-builtin", "value-external"],
+      ["type-internal", "value-internal"],
+      ["type-parent", "type-sibling", "type-index"],
+      ["value-parent", "value-sibling", "value-index"],
+      "side_effect_style",
+      "style",
+      "unknown"
+    ],
+    "internalPattern": ["#/**", "@/**"],
+    "newlinesBetween": true,
+    "partitionByComment": true,
+    "sortSideEffects": false
+  },
+  "sortTailwindcss": {
+    "stylesheet": "./src/styles.css",
+    "attributes": ["class", "className", "ngClass", "@apply", "class:list"],
+    "functions": ["classnames", "clsx", "cn", "ctl", "cva", "tv", "tw", "twMerge"],
+    "preserveDuplicates": false,
+    "preserveWhitespace": false
+  },
+  "ignorePatterns": [
+    "convex/_generated/**",
+    "src/routeTree.gen.ts",
+    ".tanstack/**",
+    ".wrangler/**",
+    ".output/**",
+    ".vinxi/**",
+    "dist/**",
+    "dist-ssr/**",
+    "coverage/**",
+    "pnpm-lock.yaml"
+  ]
+}

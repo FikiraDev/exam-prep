@@ -14,3 +14,7 @@ todos.json
 
 # vscode
 .vscode
+
+# Agents
+.agents/*
+.claude/*

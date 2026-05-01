@@ -15,10 +15,5 @@
   "routerOnly": false,
   "version": 1,
   "framework": "react",
-  "chosenAddOns": [
-    "cloudflare",
-    "convex",
-    "store",
-    "tanstack-query"
-  ]
+  "chosenAddOns": ["cloudflare", "convex", "store", "tanstack-query"]
 }
