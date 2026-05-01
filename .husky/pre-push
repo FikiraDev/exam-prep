@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+pnpm run hooks:fallow:audit
+pnpm run hooks:prepush

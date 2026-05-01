@@ -28,3 +28,7 @@ Triage labels use the default mattpocock/skills vocabulary. See `docs/agents/tri
 ### Domain docs
 
 This repo uses a single-context domain docs layout. See `docs/agents/domain.md`.
+
+### Git hooks
+
+Local hook policy and troubleshooting live in `docs/agents/hooks.md`.

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+  "ignoreDependencies": [
+    "eslint-plugin-tailwindcss",
+    "@tailwindcss/typography",
+    "@tanstack/devtools-event-client",
+    "@tanstack/react-store",
+    "@tanstack/store",
+    "lucide-react"
+  ]
+}
