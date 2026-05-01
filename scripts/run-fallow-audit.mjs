@@ -92,8 +92,6 @@ function runAudit(command, prefixArgs, candidate) {
 }
 
 function runAuditWithFallbacks(command, prefixArgs, candidates) {
-  let lastResult = null
-
   for (const [index, candidate] of candidates.entries()) {
     const result = runAudit(command, prefixArgs, candidate)
     writeOutput(result)
@@ -105,10 +103,9 @@ function runAuditWithFallbacks(command, prefixArgs, candidates) {
     console.warn(
       `[hooks] Fallow audit could not use base ref '${candidate.ref}'. Retrying with the next available base candidate.`,
     )
-    lastResult = result
   }
 
-  return lastResult
+  throw new Error('[hooks] Unreachable: no fallow audit result was produced.')
 }
 
 function resolveRunner() {
