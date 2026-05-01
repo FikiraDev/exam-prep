@@ -1,0 +1,24 @@
+{
+  "projectName": "exam-prep",
+  "mode": "file-router",
+  "typescript": true,
+  "packageManager": "pnpm",
+  "includeExamples": false,
+  "tailwind": true,
+  "addOnOptions": {},
+  "envVarValues": {
+    "CONVEX_DEPLOYMENT": "test",
+    "VITE_CONVEX_URL": "test"
+  },
+  "git": false,
+  "install": true,
+  "routerOnly": false,
+  "version": 1,
+  "framework": "react",
+  "chosenAddOns": [
+    "cloudflare",
+    "convex",
+    "store",
+    "tanstack-query"
+  ]
+}
