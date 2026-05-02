@@ -46,6 +46,8 @@ export const Route = createFileRoute('/')({
 type Todo = Doc<'todos'>
 type TodoFieldErrors = React.ComponentProps<typeof FieldError>['errors']
 
+const EMPTY_TODOS: Todo[] = []
+
 function getStats(todos: Todo[]) {
   const total = todos.length
   const completed = todos.filter((t) => t.completed).length
@@ -131,7 +133,7 @@ function TodoTextField({
 
 function IndexRouteComponent() {
   const todoData = useQuery(api.todos.list)
-  const todos = todoData ?? []
+  const todos = todoData ?? EMPTY_TODOS
   const isLoading = todoData === undefined
   const hasTodos = todos.length > 0
   const stats = getStats(todos)

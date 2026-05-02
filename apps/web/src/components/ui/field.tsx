@@ -1,7 +1,5 @@
 import type { VariantProps } from 'class-variance-authority'
 
-import { useMemo } from 'react'
-
 import { Label } from '#/components/ui/label'
 import { cn } from '#/lib/utils'
 import { cva } from 'class-variance-authority'
@@ -52,38 +50,51 @@ function FieldLabel({ className, ...props }: React.ComponentProps<typeof Label>)
   )
 }
 
+type FieldErrorItem = { message?: string } | undefined
+
+function getUniqueFieldErrors(errors: FieldErrorItem[]) {
+  return [...new Map(errors.map((error) => [error?.message, error])).values()]
+}
+
+function renderErrorList(errors: FieldErrorItem[]) {
+  return (
+    <ul className="ml-4 flex list-disc flex-col gap-1">
+      {errors.map((error) =>
+        error?.message ? <li key={error.message}>{error.message}</li> : null,
+      )}
+    </ul>
+  )
+}
+
+function renderUniqueFieldErrors(errors: FieldErrorItem[]) {
+  if (errors.length === 0) {
+    return null
+  }
+
+  if (errors.length === 1) {
+    return errors[0]?.message
+  }
+
+  return renderErrorList(errors)
+}
+
+function renderFieldErrorContent(children: React.ReactNode, errors?: FieldErrorItem[]) {
+  if (children) {
+    return children
+  }
+
+  return renderUniqueFieldErrors(errors?.length ? getUniqueFieldErrors(errors) : [])
+}
+
 function FieldError({
   className,
   children,
   errors,
   ...props
 }: React.ComponentProps<'div'> & {
-  errors?: ({ message?: string } | undefined)[]
+  errors?: FieldErrorItem[]
 }) {
-  // fallow-ignore-next-line complexity
-  const content = useMemo(() => {
-    if (children) {
-      return children
-    }
-
-    if (!errors?.length) {
-      return null
-    }
-
-    const uniqueErrors = [...new Map(errors.map((error) => [error?.message, error])).values()]
-
-    if (uniqueErrors.length === 1) {
-      return uniqueErrors[0]?.message
-    }
-
-    return (
-      <ul className="ml-4 flex list-disc flex-col gap-1">
-        {uniqueErrors.map((error) =>
-          error?.message ? <li key={error.message}>{error.message}</li> : null,
-        )}
-      </ul>
-    )
-  }, [children, errors])
+  const content = renderFieldErrorContent(children, errors)
 
   if (!content) {
     return null
