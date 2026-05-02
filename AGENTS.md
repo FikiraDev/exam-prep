@@ -13,6 +13,11 @@ Convex agent skills for common tasks can be installed by running
 When working on local development flows, `portless`, auth callbacks, or browser origins,
 read `docs/agents/portless.md` before making changes.
 
+When adding or updating shadcn/ui files in `apps/web`, remove Next.js-specific artifacts during cleanup.
+In this TanStack Start project, do not keep `"use client"` directives unless there is a verified TanStack Start-specific need.
+After making any repo file change, always run `pnpm run verify` before finishing.
+Never suppress errors or warnings that appear when running `pnpm run verify` (no lint-disable comments, fallow-ignore, or similar suppression directives) without explicit user consent.
+
 <!-- convex-ai-end -->
 
 ## Agent skills
