@@ -1,11 +1,15 @@
 import { spawn } from 'node:child_process'
 
+import { cyan } from './color-utils.mjs'
+
 const [, , prefix, command, ...args] = process.argv
 
 if (!prefix || !command) {
   console.error('Usage: node run-with-prefix.mjs <prefix> <command> [...args]')
   process.exit(1)
 }
+
+const coloredPrefix = cyan(prefix)
 
 const child = spawn(command, args, {
   detached: process.platform !== 'win32',
@@ -37,13 +41,13 @@ function pipeWithPrefix(stream, target) {
     buffer = lines.pop() ?? ''
 
     for (const line of lines) {
-      target.write(`${prefix} ${line}\n`)
+      target.write(`${coloredPrefix} ${line}\n`)
     }
   })
 
   stream.on('end', () => {
     if (buffer.length > 0) {
-      target.write(`${prefix} ${buffer}\n`)
+      target.write(`${coloredPrefix} ${buffer}\n`)
     }
   })
 }
@@ -61,7 +65,7 @@ for (const signal of ['SIGINT', 'SIGTERM', 'SIGHUP']) {
 }
 
 child.on('error', (error) => {
-  console.error(`${prefix} ${error.message}`)
+  console.error(`${coloredPrefix} ${error.message}`)
   process.exit(1)
 })
 

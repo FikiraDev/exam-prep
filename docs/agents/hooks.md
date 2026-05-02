@@ -7,6 +7,7 @@ This repo uses Git hooks only for local quality gates. There are no Cursor hooks
 - `husky` installs and runs the Git hooks from `.husky/`.
 - `lint-staged` formats and lints staged files only during `pre-commit`.
 - `fallow audit --quiet` runs during `pre-push` to catch changed-scope dead code, duplication, and complexity regressions.
+- `pnpm run verify` runs the full repo verification flow plus richer Fallow reporting stages for agent-friendly cleanup and refactor follow-up.
 
 ## Hook flow
 
@@ -57,6 +58,27 @@ Run the same checks without making a commit or push:
 pnpm exec lint-staged
 pnpm run hooks:prepush
 ```
+
+`pnpm run hooks:prepush` is the canonical pre-push pipeline and includes the Fallow audit before the lint and test checks.
+
+`pnpm run verify` is the broader repo-wide verification entrypoint. It keeps the fast changed-scope audit and adds:
+
+- `pnpm run fallow:dead-code:web`
+- `pnpm run fallow:health:web`
+- `pnpm run fallow:dupes:web`
+
+Those extra stages are intentionally in `verify`, not `pre-push`, so pushes stay focused on the fast structural gate while agents still get actionable file-level Fallow output during a fuller validation run.
+
+Useful direct commands:
+
+- `pnpm run fallow:audit`: changed-scope audit with actionable dead-code, complexity, and duplication details
+- `pnpm run fallow:dead-code:web`: changed-workspace dead-code scan grouped by package
+- `pnpm run fallow:health:web`: web workspace health score, file scores, and large-function reporting
+- `pnpm run fallow:dupes:web`: semantic duplication scan for the web workspace
+- `pnpm run fallow:fix:preview:web`: dry-run preview of Fallow auto-fixes in the web workspace
+- `pnpm run fallow:list:plugins`: inspect the framework plugins Fallow detected in this repo
+- `pnpm exec fallow dead-code --format json --quiet --workspace web --include-entry-exports`: occasional entry-export typo check
+- `pnpm exec fallow dead-code --format json --quiet --trace <file>:<export>`: prove why an export is live or dead before deleting it
 
 ## Troubleshooting
 

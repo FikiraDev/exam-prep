@@ -3,6 +3,8 @@ import type { QueryClient } from '@tanstack/react-query'
 import { HeadContent, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 
+import { TooltipProvider } from '#/components/ui/tooltip'
+
 import ConvexProvider from '../integrations/convex/provider'
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
@@ -55,10 +57,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body suppressHydrationWarning>
-        <ConvexProvider>
-          {children}
-          <TanStackDevtools config={devtoolsConfig} plugins={devtoolsPlugins} />
-        </ConvexProvider>
+        <TooltipProvider>
+          <ConvexProvider>
+            {children}
+            <TanStackDevtools config={devtoolsConfig} plugins={devtoolsPlugins} />
+          </ConvexProvider>
+        </TooltipProvider>
         <Scripts />
       </body>
     </html>
