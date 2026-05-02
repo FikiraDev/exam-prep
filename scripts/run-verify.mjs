@@ -8,9 +8,9 @@ const logger = createStructuredLogger('verify')
 const stages = [
   {
     id: 'format',
-    description: 'Format repo files in place.',
+    description: 'Check repo formatting.',
     command: 'pnpm',
-    args: ['run', 'format'],
+    args: ['run', 'format:check'],
   },
   {
     id: 'typecheck',

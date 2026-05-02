@@ -57,6 +57,8 @@ export const update = mutation({
 export const remove = mutation({
   args: { id: v.id('todos') },
   handler: async (ctx, args) => {
+    await requireTodo(ctx, args.id)
+
     return await ctx.db.delete(args.id)
   },
 })
