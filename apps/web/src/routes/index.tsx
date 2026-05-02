@@ -19,6 +19,7 @@ import { Field, FieldError, FieldLabel } from '#/components/ui/field'
 import { Input } from '#/components/ui/input'
 import { Progress } from '#/components/ui/progress'
 import { Tooltip, TooltipContent, TooltipTrigger } from '#/components/ui/tooltip'
+import { addSchema, editSchema } from '#/lib/todo-validation'
 import {
   CheckCheckIcon,
   CircleDashedIcon,
@@ -27,7 +28,6 @@ import {
   RotateCcwIcon,
   Trash2Icon,
 } from 'lucide-react'
-import { z } from 'zod'
 
 import type { Doc, Id } from '../../../../convex/_generated/dataModel'
 
@@ -45,9 +45,6 @@ export const Route = createFileRoute('/')({
 
 type Todo = Doc<'todos'>
 type TodoFieldErrors = React.ComponentProps<typeof FieldError>['errors']
-
-const addSchema = z.object({ text: z.string().min(1, 'Please add a task before submitting.') })
-const editSchema = z.object({ text: z.string().min(1, 'Task cannot be empty.') })
 
 function getStats(todos: Todo[]) {
   const total = todos.length
@@ -150,13 +147,13 @@ function IndexRouteComponent() {
     defaultValues: { text: '' },
     validators: { onSubmit: addSchema },
     onSubmit: async ({ value, formApi }) => {
-      await addTodo({ text: value.text.trim() })
+      await addTodo({ text: value.text })
       formApi.reset()
     },
   })
 
   async function saveEdit(id: Id<'todos'>, text: string) {
-    await updateTodo({ id, text: text.trim() })
+    await updateTodo({ id, text })
     setEditingId(null)
   }
 

@@ -13,6 +13,14 @@ async function requireTodo(ctx: MutationCtx, id: Id<'todos'>) {
   return todo
 }
 
+function normalizeTodoText(text: string) {
+  const trimmedText = text.trim()
+  if (trimmedText.length === 0) {
+    throw new Error('Todo text cannot be empty')
+  }
+  return trimmedText
+}
+
 export const list = query({
   args: {},
   handler: async (ctx) => {
@@ -23,8 +31,10 @@ export const list = query({
 export const add = mutation({
   args: { text: v.string() },
   handler: async (ctx, args) => {
+    const text = normalizeTodoText(args.text)
+
     return await ctx.db.insert('todos', {
-      text: args.text,
+      text,
       completed: false,
     })
   },
@@ -47,9 +57,10 @@ export const update = mutation({
   },
   handler: async (ctx, args) => {
     await requireTodo(ctx, args.id)
+    const text = normalizeTodoText(args.text)
 
     return await ctx.db.patch(args.id, {
-      text: args.text,
+      text,
     })
   },
 })
