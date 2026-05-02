@@ -8,6 +8,10 @@ const rootFiles = []
 const webFiles = []
 
 for (const arg of args) {
+  if (arg === '--') {
+    continue
+  }
+
   const rel = relative(cwd(), arg)
   if (rel.startsWith('apps/web/')) {
     webFiles.push(rel.replace('apps/web/', ''))

@@ -1,5 +1,3 @@
-/* eslint-disable tailwindcss/no-custom-classname */
-
 import type { VariantProps } from 'class-variance-authority'
 
 import { useMemo } from 'react'
@@ -7,6 +5,10 @@ import { useMemo } from 'react'
 import { Label } from '#/components/ui/label'
 import { cn } from '#/lib/utils'
 import { cva } from 'class-variance-authority'
+
+const fieldDefaultVariants = {
+  orientation: 'vertical',
+} as const
 
 const fieldVariants = cva('flex w-full gap-3 data-[invalid=true]:text-destructive', {
   variants: {
@@ -18,9 +20,7 @@ const fieldVariants = cva('flex w-full gap-3 data-[invalid=true]:text-destructiv
         'flex-col *:w-full @md/field-group:flex-row @md/field-group:items-center @md/field-group:*:w-auto @md/field-group:has-[>[data-slot=field-content]]:items-start @md/field-group:*:data-[slot=field-label]:flex-auto [&>.sr-only]:w-auto @md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px',
     },
   },
-  defaultVariants: {
-    orientation: 'vertical',
-  },
+  defaultVariants: fieldDefaultVariants,
 })
 
 function Field({
