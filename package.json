@@ -22,6 +22,7 @@
     "hooks:prepush": "pnpm run hooks:fallow:audit && pnpm run lint:root && pnpm --filter web lint && pnpm --filter web test",
     "lint": "turbo run lint lint:root --log-prefix=task",
     "lint:root": "oxlint -c oxlint.config.mjs convex scripts --deny-warnings",
+    "lint:staged": "node ./scripts/oxlint-staged.mjs",
     "prepare": "husky",
     "preview:web": "pnpm --filter web preview",
     "test": "turbo run test --log-prefix=task",
