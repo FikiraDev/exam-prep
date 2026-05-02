@@ -1,39 +1,18 @@
-<!-- convex-ai-start -->
+# Agent Instructions
 
-This project uses [Convex](https://convex.dev) as its backend.
+## Read First
 
-When working on Convex code, **always read
-`convex/_generated/ai/guidelines.md` first** for important guidelines on
-how to correctly use Convex APIs and patterns. The file contains rules that
-override what you may have learned about Convex from training data.
+- Convex backend changes: read `convex/_generated/ai/guidelines.md` first.
+- Local dev, `portless`, auth callbacks, or browser origins: read `docs/agents/portless.md`.
+- Issue tracker, triage labels, domain docs, and hook policy live in `docs/agents/`.
 
-Convex agent skills for common tasks can be installed by running
-`npx convex ai-files install`.
+## Frontend Imports
 
-When working on local development flows, `portless`, auth callbacks, or browser origins,
-read `docs/agents/portless.md` before making changes.
+- This is TanStack Start, not Next.js. Remove imported Next.js artifacts and do not keep `"use client"` unless a TanStack-specific need is verified.
+- When importing shadcn/ui or other third-party component files, clean them for this repo: no inline suppressions, no memo hooks added just to satisfy lint, explicit `htmlFor` when wrapping `<label>`, CVA `defaultVariants` in typed constants, stable empty `[]`/`{}` fallbacks as module constants.
+- Do not hand-edit generated TanStack Router or Convex headers; keep generated files generated and excluded from linting.
 
-When adding or updating shadcn/ui files in `apps/web`, remove Next.js-specific artifacts during cleanup.
-In this TanStack Start project, do not keep `"use client"` directives unless there is a verified TanStack Start-specific need.
-After making any repo file change, always run `pnpm run verify` before finishing.
-Never suppress errors or warnings that appear when running `pnpm run verify` (no lint-disable comments, fallow-ignore, or similar suppression directives) without explicit user consent.
+## Verification
 
-<!-- convex-ai-end -->
-
-## Agent skills
-
-### Issue tracker
-
-Issues and PRDs are tracked in GitHub Issues for `FikiraDev/exam-prep`. See `docs/agents/issue-tracker.md`.
-
-### Triage labels
-
-Triage labels use the default mattpocock/skills vocabulary. See `docs/agents/triage-labels.md`.
-
-### Domain docs
-
-This repo uses a single-context domain docs layout. See `docs/agents/domain.md`.
-
-### Git hooks
-
-Local hook policy and troubleshooting live in `docs/agents/hooks.md`.
+- After any repo file change, run `pnpm run verify`.
+- Do not suppress verify errors or warnings with `lint-disable`, `fallow-ignore`, or similar directives without explicit user consent.
