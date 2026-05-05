@@ -49,7 +49,7 @@ function DashboardPageLayout({ children }: { children: React.ReactNode }) {
 
 function TodoListSkeleton() {
   return (
-    <div className="divide-y divide-border/50">
+    <div className="divide-y divide-border/50" role="list">
       {SKELETON_WIDTHS.map((width) => (
         <div className="flex animate-pulse items-center gap-3 py-3" key={width}>
           <div className="size-4 shrink-0 rounded bg-muted" />
@@ -555,7 +555,7 @@ function TodoRow({
   )
 
   return (
-    <div className="group flex items-center gap-3 py-3">
+    <div className="group flex items-center gap-3 py-3" role="listitem">
       <Field className="w-auto shrink-0" orientation="horizontal">
         <Checkbox
           aria-label={checkboxLabel}

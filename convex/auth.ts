@@ -97,6 +97,23 @@ async function deleteAuthRowsForUser(ctx: MutationCtx, userId: string) {
   })
 }
 
+async function deleteTodosForUser(ctx: MutationCtx, userId: string) {
+  const todos = await ctx.db
+    .query('todos')
+    .withIndex('by_user', (q) => q.eq('userId', userId))
+    .take(CLEANUP_BATCH_SIZE)
+
+  if (todos.length === 0) {
+    return
+  }
+
+  await Promise.all(todos.map((todo) => ctx.db.delete(todo['_id'])))
+
+  if (todos.length === CLEANUP_BATCH_SIZE) {
+    await deleteTodosForUser(ctx, userId)
+  }
+}
+
 export function createAuth(ctx: GenericCtx<DataModel>) {
   return betterAuth({
     baseURL: requireSiteUrl(),
@@ -135,6 +152,7 @@ export const cleanupTestUser = mutation({
 
     const userId = user['_id']
 
+    await deleteTodosForUser(ctx, userId)
     await deleteAuthRowsForUser(ctx, userId)
     return { deleted: true }
   },

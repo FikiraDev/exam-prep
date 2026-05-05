@@ -105,7 +105,11 @@ async function addTodo(page: Page, text: string) {
 }
 
 async function deleteTodo(page: Page, text: string) {
-  await page.getByRole('button', { name: 'Delete task' }).click()
+  await page
+    .getByRole('listitem')
+    .filter({ hasText: text })
+    .getByRole('button', { name: 'Delete task' })
+    .click()
   await expect(page.getByText(text)).toBeHidden()
 }
 
@@ -117,12 +121,14 @@ test.describe('Authentication Flow', () => {
 
     const testUser = buildTestUser()
     const todoText = `E2E persistence ${Date.now()}`
+    const otherTodoText = `E2E keep ${Date.now()}`
     const pageIssues = collectPageIssues(page)
 
     await signUpForTest(page, testUser)
     await signOut(page)
 
     await login(page, testUser)
+    await addTodo(page, otherTodoText)
     await addTodo(page, todoText)
 
     await page.reload()
@@ -130,10 +136,12 @@ test.describe('Authentication Flow', () => {
     await expect(page.getByText(todoText)).toBeVisible()
 
     await deleteTodo(page, todoText)
+    await expect(page.getByText(otherTodoText)).toBeVisible()
 
     await page.reload()
     await expectDashboard(page)
     await expect(page.getByText(todoText)).toBeHidden()
+    await expect(page.getByText(otherTodoText)).toBeVisible()
 
     await emulateSlow4G(page)
     await signOut(page)
