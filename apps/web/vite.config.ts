@@ -12,6 +12,9 @@ const config = defineConfig(() => {
   return {
     envDir: '../../',
     resolve: { tsconfigPaths: true },
+    ssr: {
+      noExternal: ['@convex-dev/better-auth'],
+    },
     plugins: [
       devtools(),
       // Vitest injects Vite SSR externals that the Cloudflare plugin forbids.

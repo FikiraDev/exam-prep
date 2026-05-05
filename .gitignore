@@ -8,15 +8,19 @@ dist-ssr
 **/.env
 **/.env.*
 !**/.env.example
+!**/.env.convex.*
 .dev.vars*
 
 # Logs / diagnostics
 *.log
 pnpm-debug.log*
+trace*.json.gz
 
 # Tests / TypeScript cache
 coverage/
 *.tsbuildinfo
+apps/web/test-results/
+apps/web/playwright-report/
 
 .nitro
 .tanstack
