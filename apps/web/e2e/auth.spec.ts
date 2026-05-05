@@ -127,6 +127,8 @@ test.describe('Authentication Flow', () => {
 
     await expect(page).toHaveURL(/\/login$/)
     await expect(page.getByRole('alert')).toHaveText('Unable to sign in.')
+    await expect(page.getByLabel('Email')).toHaveValue(TEST_USER_INVALID.email)
+    await expect(page.getByLabel('Password')).toHaveValue(TEST_USER_INVALID.password)
   })
 
   test('login, persist through todo changes and refreshes, then sign out cleanly', async ({

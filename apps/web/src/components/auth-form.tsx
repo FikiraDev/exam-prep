@@ -37,6 +37,12 @@ type AuthValues = {
 }
 type FieldErrors = Partial<Record<keyof AuthValues, string>>
 
+const EMPTY_AUTH_VALUES: AuthValues = {
+  name: '',
+  email: '',
+  password: '',
+}
+
 const modeConfig = {
   login: {
     title: 'Sign in',
@@ -60,11 +66,6 @@ const modeConfig = {
   },
 } as const
 
-function formString(formData: FormData, name: string) {
-  const value = formData.get(name)
-  return typeof value === 'string' ? value : ''
-}
-
 function validateAuthValues(mode: AuthMode, values: AuthValues) {
   const result = mode === 'login' ? loginSchema.safeParse(values) : signupSchema.safeParse(values)
 
@@ -75,14 +76,6 @@ function validateAuthValues(mode: AuthMode, values: AuthValues) {
   return Object.fromEntries(
     result.error.issues.map((issue) => [issue.path[0], issue.message]),
   ) as FieldErrors
-}
-
-function formValues(formData: FormData) {
-  return {
-    name: formString(formData, 'name'),
-    email: formString(formData, 'email'),
-    password: formString(formData, 'password'),
-  }
 }
 
 async function submitAuth(mode: AuthMode, values: AuthValues) {
@@ -150,14 +143,18 @@ function TextField({
   label,
   maxLength,
   name,
+  onChange,
   type = 'text',
+  value,
 }: {
   autoComplete: string
   error?: string
   label: string
   maxLength?: number
   name: keyof AuthValues
+  onChange: (name: keyof AuthValues, value: string) => void
   type?: React.HTMLInputTypeAttribute
+  value: string
 }) {
   const id = `auth-${name}`
 
@@ -170,25 +167,46 @@ function TextField({
         id={id}
         maxLength={maxLength}
         name={name}
+        onChange={(e) => onChange(name, e.target.value)}
         type={type}
+        value={value}
       />
       <FieldError>{error}</FieldError>
     </Field>
   )
 }
 
-function AuthFields({ errors, mode }: { errors: FieldErrors; mode: AuthMode }) {
+function AuthFields({
+  errors,
+  mode,
+  onChange,
+  values,
+}: {
+  errors: FieldErrors
+  mode: AuthMode
+  onChange: (name: keyof AuthValues, value: string) => void
+  values: AuthValues
+}) {
   return (
     <div className="flex flex-col gap-4">
       {mode === 'signup' ? (
-        <TextField autoComplete="name" error={errors.name} label="Name" name="name" />
+        <TextField
+          autoComplete="name"
+          error={errors.name}
+          label="Name"
+          name="name"
+          onChange={onChange}
+          value={values.name ?? ''}
+        />
       ) : null}
       <TextField
         autoComplete="email"
         error={errors.email}
         label="Email"
         name="email"
+        onChange={onChange}
         type="email"
+        value={values.email}
       />
       <TextField
         autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
@@ -196,7 +214,9 @@ function AuthFields({ errors, mode }: { errors: FieldErrors; mode: AuthMode }) {
         label="Password"
         maxLength={PASSWORD_MAX_LENGTH}
         name="password"
+        onChange={onChange}
         type="password"
+        value={values.password}
       />
     </div>
   )
@@ -210,16 +230,20 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
   const [formError, setFormError] = useState<string | null>(null)
   const [isHydrated, setIsHydrated] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [values, setValues] = useState<AuthValues>(EMPTY_AUTH_VALUES)
 
   useEffect(() => {
     setIsHydrated(true)
   }, [])
 
+  function handleValueChange(name: keyof AuthValues, value: string) {
+    setValues((currentValues) => ({ ...currentValues, [name]: value }))
+  }
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setFormError(null)
 
-    const values = formValues(new FormData(event.currentTarget))
     const nextErrors = validateAuthValues(mode, values)
     setErrors(nextErrors)
     if (hasFieldErrors(nextErrors)) {
@@ -249,7 +273,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
         <p className="text-sm text-muted-foreground">{config.description}</p>
       </div>
 
-      <AuthFields errors={errors} mode={mode} />
+      <AuthFields errors={errors} mode={mode} onChange={handleValueChange} values={values} />
 
       {formError ? (
         <p className="text-sm text-destructive" role="alert">

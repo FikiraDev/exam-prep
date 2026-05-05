@@ -305,6 +305,17 @@ function DashboardRouteComponent() {
 
   async function handleSignOut() {
     setActionError(null)
+    let didNavigate = false
+    const navigateToLogin = () => {
+      if (didNavigate) {
+        return
+      }
+      didNavigate = true
+      // ConvexQueryClient uses `expectAuth: true`; a full document navigation
+      // prevents stale authenticated subscriptions from firing after sign-out.
+      globalThis.location.assign('/login')
+    }
+
     // Set signing-out FIRST so the query-heavy subtree unmounts before
     // signOut() clears the session, preventing Convex errors from
     // propagating to the route errorComponent.
@@ -312,15 +323,10 @@ function DashboardRouteComponent() {
     try {
       await authClient.signOut({
         fetchOptions: {
-          onSuccess: () => {
-            // ConvexQueryClient uses `expectAuth: true`, and the current
-            // Convex + Better Auth TanStack Start guidance recommends a full
-            // document navigation after sign-out so stale authenticated
-            // subscriptions cannot fire before auth resets.
-            globalThis.location.assign('/login')
-          },
+          onSuccess: navigateToLogin,
         },
       })
+      navigateToLogin()
     } catch (error) {
       console.error('Failed to sign out', error)
       setIsSigningOut(false)
