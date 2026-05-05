@@ -69,15 +69,28 @@ child.on('error', (error) => {
   process.exit(1)
 })
 
-child.on('exit', (code, signal) => {
+function removeSignalHandlers() {
   for (const [name, handler] of signalHandlers) {
     process.off(name, handler)
   }
+}
 
-  if (signal) {
+function exitFromSignal(signal) {
+  try {
     process.kill(process.pid, signal)
+  } catch {
+    process.exit(1)
+  }
+}
+
+function handleChildExit(code, signal) {
+  removeSignalHandlers()
+  if (signal) {
+    exitFromSignal(signal)
     return
   }
 
   process.exit(code ?? 0)
-})
+}
+
+child.on('exit', handleChildExit)

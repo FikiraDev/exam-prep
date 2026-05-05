@@ -29,7 +29,7 @@ if (rootFiles.length > 0) {
     { stdio: 'inherit' },
   )
   if (result.status !== 0) {
-    exitCode = result.status || 1
+    exitCode = result.status ?? 1
   }
 }
 
@@ -40,7 +40,7 @@ if (webFiles.length > 0) {
     { cwd: 'apps/web', stdio: 'inherit' },
   )
   if (result.status !== 0) {
-    exitCode = result.status || 1
+    exitCode = result.status ?? 1
   }
 }
 

@@ -74,6 +74,7 @@ export function bold(text) {
 }
 
 /**
+ * @internal
  * Make text dim/low-intensity.
  * @param {string} text
  * @returns {string}
@@ -110,6 +111,7 @@ export function yellow(text) {
 }
 
 /**
+ * @internal
  * Color text blue (info, typecheck).
  * @param {string} text
  * @returns {string}
@@ -128,6 +130,7 @@ export function cyan(text) {
 }
 
 /**
+ * @internal
  * Color text magenta (fallow, special).
  * @param {string} text
  * @returns {string}
@@ -146,6 +149,7 @@ export function gray(text) {
 }
 
 /**
+ * @internal
  * Color text white (default).
  * @param {string} text
  * @returns {string}
