@@ -9,6 +9,10 @@
     "deploy:convex": "convex deploy",
     "deploy:web": "pnpm --filter web deploy",
     "dev": "turbo run dev --filter=web --log-prefix=task",
+    "env:list": "npx convex env list",
+    "env:list:prod": "npx convex env list --prod",
+    "env:sync:dev": "npx convex env set --from-file .env.convex.dev",
+    "env:sync:prod": "npx convex env set --from-file .env.convex.prod --prod",
     "fallow:audit": "node ./scripts/run-fallow-audit.mjs",
     "fallow:dead-code:web": "node ./scripts/run-fallow-command.mjs dead-code:web",
     "fallow:dupes:web": "node ./scripts/run-fallow-command.mjs dupes:web",
@@ -26,11 +30,20 @@
     "prepare": "husky",
     "preview:web": "pnpm --filter web preview",
     "test": "turbo run test --log-prefix=task",
+    "test:e2e": "turbo run test:e2e --log-prefix=task",
+    "test:e2e:ui": "turbo run test:e2e:ui --log-prefix=task",
     "typecheck": "pnpm exec tsc --noEmit -p convex/tsconfig.json && pnpm exec tsc --noEmit -p apps/web/tsconfig.json",
     "verify": "node ./scripts/run-verify.mjs"
   },
+  "dependencies": {
+    "@convex-dev/better-auth": "0.12.1",
+    "better-auth": "~1.6.9"
+  },
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^22.19.17",
     "convex": "^1.32.0",
+    "convex-test": "^0.0.51",
     "eslint-plugin-tailwindcss": "4.0.0-alpha.2",
     "fallow": "^2.60.0",
     "husky": "^9.1.7",
@@ -38,6 +51,7 @@
     "oxfmt": "^0.47.0",
     "oxlint": "^1.62.0",
     "oxlint-tsgolint": "^0.22.1",
+    "playwright": "^1.59.1",
     "portless": "0.12.0",
     "turbo": "^2.5.6",
     "typescript": "^6.0.2"

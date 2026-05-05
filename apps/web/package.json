@@ -14,11 +14,14 @@
     "lint:fix": "oxlint -c ./oxlint.config.mjs . --fix --fix-suggestions",
     "lint:fix:dangerously": "oxlint -c ./oxlint.config.mjs . --fix --fix-suggestions --fix-dangerously",
     "preview": "vite preview",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run --passWithNoTests --exclude \"**/e2e/**\" --exclude \"e2e/**\"",
+    "test:e2e": "env -u NO_COLOR playwright test",
+    "test:e2e:ui": "env -u NO_COLOR playwright test --ui"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",
     "@cloudflare/vite-plugin": "^1.26.0",
+    "@convex-dev/better-auth": "0.12.1",
     "@convex-dev/react-query": "0.1.0",
     "@fontsource-variable/inter": "^5.2.8",
     "@tailwindcss/vite": "^4.1.18",
@@ -33,6 +36,7 @@
     "@tanstack/react-store": "latest",
     "@tanstack/router-plugin": "^1.132.0",
     "@tanstack/store": "latest",
+    "better-auth": "~1.6.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "convex": "^1.32.0",

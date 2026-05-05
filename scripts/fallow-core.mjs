@@ -75,7 +75,7 @@ export function isRecoverableBaseRefError(result) {
   }
 
   const output = `${result.stdout ?? ''}\n${result.stderr ?? ''}`
-  return /could not create a temporary worktree|base ref/i.test(output)
+  return /could not create a temporary worktree|fatal:.*base ref/i.test(output)
 }
 
 export function writeOutput(result) {

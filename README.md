@@ -50,6 +50,24 @@ This project uses [Vitest](https://vitest.dev/) for testing. You can run the tes
 pnpm test
 ```
 
+### End-to-End Testing
+
+This project uses [Playwright](https://playwright.dev/) for end-to-end testing.
+
+To run the e2e tests:
+
+```bash
+pnpm test:e2e
+```
+
+To run the e2e tests in UI mode:
+
+```bash
+pnpm test:e2e:ui
+```
+
+Tests are located in `apps/web/e2e/`. Playwright is configured to automatically start the development server using `pnpm dev`.
+
 ## Styling
 
 This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.

@@ -1,4 +1,4 @@
-import { spawnSync } from 'node:child_process'
+import { spawn } from 'node:child_process'
 
 import { bold, cyan, green, red, gray, printRule, getStageColor } from './color-utils.mjs'
 import { createStructuredLogger, writePrefixedLines } from './log-utils.mjs'
@@ -41,18 +41,21 @@ const stages = [
     description: 'Run changed-workspace Fallow dead-code scan.',
     command: 'pnpm',
     args: ['run', 'fallow:dead-code:web'],
+    parallelGroup: 'fallow:web',
   },
   {
     id: 'fallow:health:web',
     description: 'Run web workspace Fallow health scan.',
     command: 'pnpm',
     args: ['run', 'fallow:health:web'],
+    parallelGroup: 'fallow:web',
   },
   {
     id: 'fallow:dupes:web',
     description: 'Run web workspace Fallow duplication scan.',
     command: 'pnpm',
     args: ['run', 'fallow:dupes:web'],
+    parallelGroup: 'fallow:web',
   },
 ]
 
@@ -79,11 +82,40 @@ function formatDuration(durationMs) {
 }
 
 function runCommand(stage) {
-  return spawnSync(stage.command, stage.args, {
-    cwd: process.cwd(),
-    encoding: 'utf8',
-    env: process.env,
-    stdio: 'pipe',
+  return new Promise((resolve) => {
+    const child = spawn(stage.command, stage.args, {
+      cwd: process.cwd(),
+      env: process.env,
+      stdio: 'pipe',
+    })
+    const stdout = []
+    const stderr = []
+
+    child.stdout.setEncoding('utf8')
+    child.stderr.setEncoding('utf8')
+    child.stdout.on('data', (chunk) => {
+      stdout.push(chunk)
+    })
+    child.stderr.on('data', (chunk) => {
+      stderr.push(chunk)
+    })
+    child.on('error', (error) => {
+      resolve({
+        error,
+        signal: null,
+        status: null,
+        stderr: stderr.join(''),
+        stdout: stdout.join(''),
+      })
+    })
+    child.on('close', (code, signal) => {
+      resolve({
+        signal,
+        status: code,
+        stderr: stderr.join(''),
+        stdout: stdout.join(''),
+      })
+    })
   })
 }
 
@@ -136,7 +168,7 @@ function logStageResultFailure(stage, result) {
   })
 }
 
-function runStage(stage, index, total) {
+async function runStage(stage, index, total) {
   const stageColor = getStageColor(stage.id)
   const orderLabel = gray(`[${index + 1}/${total}]`)
 
@@ -153,7 +185,7 @@ function runStage(stage, index, total) {
   })
 
   const startedAt = nowInMs()
-  const result = runCommand(stage)
+  const result = await runCommand(stage)
   const durationMs = nowInMs() - startedAt
   printStageOutputs(stage, result)
 
@@ -195,6 +227,35 @@ function runStage(stage, index, total) {
     result,
     stage,
   }
+}
+
+async function runSequentialStages(queue, results = []) {
+  const [nextStage, ...remainingStages] = queue
+  if (!nextStage) {
+    return results
+  }
+
+  return await runSequentialStages(remainingStages, [
+    ...results,
+    await runStage(nextStage.stage, nextStage.index, stages.length),
+  ])
+}
+
+async function runStages() {
+  const indexedStages = stages.map((stage, index) => ({ index, stage }))
+  const sequentialQueue = indexedStages.filter(({ stage }) => stage.parallelGroup !== 'fallow:web')
+  const parallelQueue = indexedStages.filter(({ stage }) => stage.parallelGroup === 'fallow:web')
+
+  const results = await runSequentialStages(sequentialQueue)
+
+  if (parallelQueue.length > 0) {
+    const parallelResults = await Promise.all(
+      parallelQueue.map(({ index, stage }) => runStage(stage, index, stages.length)),
+    )
+    results.push(...parallelResults)
+  }
+
+  return results
 }
 
 function printFinalSummary(results, totalDurationMs) {
@@ -254,7 +315,7 @@ logger.info('verify_start', {
 })
 
 const verifyStartedAt = nowInMs()
-const results = stages.map((stage, index) => runStage(stage, index, stages.length))
+const results = await runStages()
 const totalDurationMs = nowInMs() - verifyStartedAt
 const failures = results.filter((result) => result.exitCode !== 0)
 

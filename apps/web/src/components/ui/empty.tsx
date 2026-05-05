@@ -9,7 +9,7 @@ type EmptySlotProps<T extends ElementType> = {
   as?: T
   className?: string
   slot: string
-} & Omit<ComponentPropsWithoutRef<T>, 'as' | 'className'>
+} & Omit<ComponentPropsWithoutRef<T>, 'as'>
 
 function EmptySlot<T extends ElementType = 'div'>({
   as,
