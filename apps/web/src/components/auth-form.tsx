@@ -251,7 +251,11 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
 
       <AuthFields errors={errors} mode={mode} />
 
-      {formError ? <p className="text-sm text-destructive">{formError}</p> : null}
+      {formError ? (
+        <p className="text-sm text-destructive" role="alert">
+          {formError}
+        </p>
+      ) : null}
 
       <Button disabled={!isHydrated} type="submit">
         {config.submitLabel}

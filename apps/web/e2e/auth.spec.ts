@@ -2,7 +2,13 @@ import type { Page } from '@playwright/test'
 
 import { expect, test } from '@playwright/test'
 
-import { buildTestUser } from '../src/test/fixtures/auth'
+import { TEST_USER_INVALID, buildTestUser } from '../src/test/fixtures/auth'
+
+type AuthCredentials = {
+  email: string
+  name?: string
+  password: string
+}
 
 async function expectDashboard(page: Page) {
   await expect(page).toHaveURL(/\/dashboard$/)
@@ -18,10 +24,10 @@ async function expectLoggedOut(page: Page) {
 
 async function fillCredentials(
   page: Page,
-  user: ReturnType<typeof buildTestUser>,
+  user: AuthCredentials,
   options?: { includeName?: boolean },
 ) {
-  if (options?.includeName) {
+  if (options?.includeName && user.name) {
     await page.getByLabel('Name').fill(user.name)
   }
 
@@ -114,6 +120,15 @@ async function deleteTodo(page: Page, text: string) {
 }
 
 test.describe('Authentication Flow', () => {
+  test('invalid login shows a safe generic error and stays on login', async ({ page }) => {
+    await page.goto('/login')
+    await fillCredentials(page, TEST_USER_INVALID)
+    await page.getByRole('button', { name: 'Sign in' }).click()
+
+    await expect(page).toHaveURL(/\/login$/)
+    await expect(page.getByRole('alert')).toHaveText('Unable to sign in.')
+  })
+
   test('login, persist through todo changes and refreshes, then sign out cleanly', async ({
     page,
   }) => {

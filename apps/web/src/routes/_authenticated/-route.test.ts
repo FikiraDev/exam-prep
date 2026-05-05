@@ -1,6 +1,5 @@
+import { isAuthError } from '#/lib/auth-error-detection'
 import { describe, expect, it } from 'vitest'
-
-import { isAuthError } from './route'
 
 describe('isAuthError', () => {
   it.each([
@@ -18,6 +17,10 @@ describe('isAuthError', () => {
 
   it('returns false for a non-auth Error', () => {
     expect(isAuthError(new Error('Database connection failed'))).toBe(false)
+  })
+
+  it.each(['Unauthorized', 'Unauthenticated'])('returns true for auth error code: %s', (code) => {
+    expect(isAuthError(Object.assign(new Error('Token refresh failed'), { code }))).toBe(true)
   })
 
   it('returns false for a non-Error thrown value', () => {

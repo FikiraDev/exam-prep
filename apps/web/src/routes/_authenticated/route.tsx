@@ -4,23 +4,11 @@ import { AuthBoundary } from '@convex-dev/better-auth/react'
 
 import { Button } from '#/components/ui/button'
 import { authClient } from '#/lib/auth-client'
+import { isAuthError } from '#/lib/auth-error-detection'
 import { AlertCircleIcon } from 'lucide-react'
 
 import { api } from '../../../../../convex/_generated/api'
 import { DashboardPending } from './dashboard'
-
-export function isAuthError(error: unknown): boolean {
-  if (!(error instanceof Error)) {
-    return false
-  }
-  // Convex wraps server errors so the client-side message includes the
-  // original server error text, e.g.:
-  //   "[CONVEX Q(todos:list)] Unauthorized\n  Called by client"
-  //   "[CONVEX Q(auth:getCurrentUser)] Unauthenticated\n  Called by client"
-  // Both shapes originate from auth checks and must be caught by the
-  // AuthBoundary so they never reach the route-level errorComponent.
-  return error.message.includes('Unauthorized') || error.message.includes('Unauthenticated')
-}
 
 function AuthenticatedLayout() {
   const router = useRouter()

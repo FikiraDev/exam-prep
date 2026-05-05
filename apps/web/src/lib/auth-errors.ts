@@ -5,5 +5,5 @@ export function getAuthErrorMessage(
   if (error?.status === 429) {
     return 'Too many attempts. Please try again later.'
   }
-  return error?.message ?? fallbackMessage
+  return fallbackMessage
 }

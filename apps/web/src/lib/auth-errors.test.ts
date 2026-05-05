@@ -8,10 +8,17 @@ describe('getAuthErrorMessage', () => {
     expect(getAuthErrorMessage(undefined, 'Fallback')).toBe('Fallback')
   })
 
-  it('returns the error message when present', () => {
-    expect(getAuthErrorMessage({ message: 'Invalid credentials.' }, 'Fallback')).toBe(
-      'Invalid credentials.',
-    )
+  it.each(['Invalid password.', 'User not found.'])(
+    'returns the fallback message instead of raw server copy: %s',
+    (message) => {
+      expect(getAuthErrorMessage({ message }, 'Fallback')).toBe('Fallback')
+    },
+  )
+
+  it('returns the fallback message for unmapped statuses', () => {
+    expect(
+      getAuthErrorMessage({ status: 500, message: 'Internal server error.' }, 'Fallback'),
+    ).toBe('Fallback')
   })
 
   it('returns a rate-limit message for 429 status', () => {
@@ -20,7 +27,7 @@ describe('getAuthErrorMessage', () => {
     )
   })
 
-  it('falls back when the error has no message', () => {
+  it('returns the fallback message when the error has no message', () => {
     expect(getAuthErrorMessage({ status: 500 }, 'Fallback')).toBe('Fallback')
   })
 })
