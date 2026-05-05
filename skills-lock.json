@@ -7,6 +7,12 @@
       "skillPath": "skills/productivity/caveman/SKILL.md",
       "computedHash": "934433479903febc585bf6deb5f0cebc63137e3f86b7babe0aab1ecb94d6d7a4"
     },
+    "code-review-pro": {
+      "source": "onewave-ai/claude-skills",
+      "sourceType": "github",
+      "skillPath": "code-review-pro/SKILL.md",
+      "computedHash": "445641e6b9eaa5a00f49060259fb4e23a8f339536ec7fc313e39b817dd402a51"
+    },
     "convex": {
       "source": "get-convex/agent-skills",
       "sourceType": "github",
@@ -90,6 +96,12 @@
       "sourceType": "github",
       "skillPath": "skills/shadcn/SKILL.md",
       "computedHash": "80a6226e78f6d1fe464214ae0ef449d49d8ffaa3e7704f011e9b418c678ad4d1"
+    },
+    "tanstack-start-best-practices": {
+      "source": "deckardger/tanstack-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/tanstack-start/SKILL.md",
+      "computedHash": "8b073187405a10f9997158f9139a9664cc801595d2fe63d542a0bac9bf2152f5"
     },
     "tdd": {
       "source": "mattpocock/skills",
