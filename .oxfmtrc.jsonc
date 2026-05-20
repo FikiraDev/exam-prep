@@ -1,0 +1,29 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 100,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": false,
+  "singleQuote": true,
+  "jsxSingleQuote": false,
+  "trailingComma": "all",
+  "insertFinalNewline": true,
+  "sortImports": {
+    "sortSideEffects": false,
+  },
+  "sortTailwindcss": {
+    "functions": ["cn", "cva", "clsx", "twMerge"],
+    "style": "./src/styles.css",
+  },
+  "ignorePatterns": [
+    "node_modules/",
+    "dist/",
+    "dist-ssr/",
+    ".agents/",
+    ".tanstack/",
+    ".vinxi/",
+    ".wrangler/",
+    ".output/",
+    "src/routeTree.gen.ts",
+  ],
+}

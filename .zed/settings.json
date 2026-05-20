@@ -1,0 +1,10 @@
+{
+  "format_on_save": "on",
+  "formatter": {
+    "external": {
+      "command": "bunx",
+      "arguments": ["oxfmt", "--config", ".oxfmtrc.jsonc", "--stdin-filepath", "{buffer_path}"]
+    }
+  },
+  "file_scan_exclusions": ["**/routeTree.gen.ts"]
+}

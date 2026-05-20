@@ -1,4 +1,4 @@
-Welcome to your new TanStack Start app! 
+Welcome to your new TanStack Start app!
 
 # Getting Started
 
@@ -59,6 +59,30 @@ This project uses [Vitest](https://vitest.dev/) for testing. You can run the tes
 bun --bun run test
 ```
 
+## Linting and Formatting
+
+This project uses [Oxfmt](https://oxc.rs/docs/guide/usage/formatter.html) for formatting and [Oxlint](https://oxc.rs/docs/guide/usage/linter.html) for fast JavaScript/TypeScript linting.
+
+```bash
+bun run format         # write formatting changes
+bun run format:check   # check formatting without writing
+bun run lint           # fast lint pass
+bun run lint:fix       # safe lint autofixes
+bun run lint:typeaware # type-aware lint pass for full local checks
+bun run lint:react19   # React 19 hooks/compiler best-practices pass
+bun run scan:react     # start dev server with React Scan injected
+bun run fix            # formatter + safe lint fixes
+bun run check          # full local quality gate
+```
+
+Pre-commit hooks run `bun run lint:staged`, which formats staged supported files and applies safe oxlint fixes. `bun run check` also runs the official React Hooks `recommended-latest` rules so React 19 and React Compiler diagnostics are part of the local gate.
+
+For a runtime render review, run `bun run scan:react` and open `https://exam-prep-scan.localhost`. This starts a separate local dev server with React Scan injected, using the Aiden Bai/Million tool for finding slow or unnecessary renders that static linting cannot prove.
+
+TanStack Router owns `src/routeTree.gen.ts`; it is intentionally ignored by linting, formatting, file watching, and editor search.
+
+Convex-specific lint rules are not installed yet because this checkout does not include Convex code. When Convex is added, keep oxlint/oxfmt as the default fast path and add the official Convex ESLint plugin as a focused companion check for the Convex directory.
+
 ## Styling
 
 This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
@@ -71,8 +95,6 @@ If you prefer not to use Tailwind CSS:
 2. Replace the Tailwind import in `src/styles.css` with your own styles
 3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
 4. Uninstall the packages: `bun install @tailwindcss/vite tailwindcss -D`
-
-
 
 ## Routing
 
@@ -91,7 +113,7 @@ Now that you have two routes you can use a `Link` component to navigate between 
 To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
 
 ```tsx
-import { Link } from "@tanstack/react-router";
+import { Link } from '@tanstack/react-router'
 ```
 
 Then anywhere in your JSX you can use it like so:
@@ -159,11 +181,11 @@ const getServerTime = createServerFn({
 // Use in a component
 function MyComponent() {
   const [time, setTime] = useState('')
-  
+
   useEffect(() => {
     getServerTime().then(setTime)
   }, [])
-  
+
   return <div>Server time: {time}</div>
 }
 ```

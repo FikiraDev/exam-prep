@@ -6,13 +6,24 @@
     "#/*": "./src/*"
   },
   "scripts": {
+    "prepare": "husky",
     "dev": "portless run vite dev",
     "dev:app": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc --noEmit",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "lint:typeaware": "oxlint --type-aware --tsconfig tsconfig.json",
+    "lint:react19": "eslint . --max-warnings=0",
+    "lint:staged": "lint-staged",
+    "scan:react": "VITE_REACT_SCAN=true portless run --name exam-prep-scan vite dev",
+    "fix": "bun run format && bun run lint:fix",
+    "check": "bun run format:check && bun run lint && bun run lint:typeaware && bun run lint:react19 && bun run typecheck && bun run test && bun run build"
   },
-  "portless": "exam-prep",
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "latest",
@@ -35,16 +46,35 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^6.0.1",
+    "eslint": "^10.4.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "husky": "^9.1.7",
     "jsdom": "^28.1.0",
+    "lint-staged": "^17.0.5",
+    "oxfmt": "^0.51.0",
+    "oxlint": "^1.66.0",
+    "oxlint-tsgolint": "^0.23.0",
     "portless": "^0.13.0",
+    "react-scan": "^0.5.6",
     "typescript": "^6.0.2",
+    "typescript-eslint": "^8.59.4",
     "vite": "^8.0.0",
     "vitest": "^4.1.5"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "oxfmt --no-error-on-unmatched-pattern",
+      "oxlint --fix --quiet --no-error-on-unmatched-pattern"
+    ],
+    "*.{json,jsonc,json5,css,scss,less,md,mdx,yml,yaml,toml,html}": [
+      "oxfmt --no-error-on-unmatched-pattern"
+    ]
   },
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild",
       "lightningcss"
     ]
-  }
+  },
+  "portless": "exam-prep"
 }
