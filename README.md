@@ -6,8 +6,42 @@ To run this application:
 
 ```bash
 bun install
-bun --bun run dev
+bun run dev
 ```
+
+The dev server runs at **https://exam-prep.localhost** via [portless](https://github.com/vercel-labs/portless). Portless assigns a free port to Vite and routes the stable `.localhost` URL through a local HTTPS proxy.
+
+To run Vite directly without the proxy:
+
+```bash
+bun run dev:app
+```
+
+## First-time setup
+
+Start the HTTPS proxy once. macOS/Linux may prompt for sudo because the normal setup binds HTTPS on port 443:
+
+```bash
+portless proxy start
+portless trust
+```
+
+Then run `bun run dev` and open **https://exam-prep.localhost**.
+
+If `portless proxy start` falls back to an explicit port, the app will be reachable at a URL like `http://exam-prep.localhost:1355`, but that is a degraded local setup. Stop the fallback proxy and restart the normal HTTPS proxy:
+
+```bash
+portless proxy stop
+portless proxy start
+```
+
+Use `portless list` to confirm the active route. A healthy route for this app looks like:
+
+```text
+https://exam-prep.localhost -> localhost:<vite-port> (pid <pid>)
+```
+
+If `bun run dev` says `exam-prep.localhost` is already registered, another dev process is still running. Check `portless list`, stop the stale process, then run `bun run dev` again.
 
 # Building For Production
 
